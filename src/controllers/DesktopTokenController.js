@@ -1,13 +1,18 @@
 import DesktopToken from "../models/DesktopToken.js";
 import JobEmail from "../models/JobEmail.js";
+import User from "../models/User.js";
 import UserDefaults from "../models/UserDefaults.js";
 import EmailTemplate from "../models/EmailTemplate.js";
 import Resume from "../models/Resume.js";
 import { Queue } from "bullmq";
+import { redisConnection } from "../config/redis.js";
 
-const emailQueue = new Queue("emailQueue", {
-  connection: { host: "localhost", port: 6379 },
+export const emailQueue = new Queue("emailQueue", {
+  connection: redisConnection,
 });
+// const emailQueue = new Queue("emailQueue", {
+//   connection: { host: "localhost", port: 6379 },
+// });
 
 export const createDesktopToken = async (req, res) => {
   try {
@@ -47,6 +52,38 @@ export const getMyDesktopToken = async (req, res) => {
       success: false,
       message: "Failed to fetch token",
     });
+  }
+};
+
+export const desktopLogin = async (req, res) => {
+  try {
+    console.log("DESKTOP LOGIN REQ:", req.body, req.query);
+
+    const { email, password } = req.body;
+    const { callback } = req.query;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email & password required" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+
+    await DesktopToken.deleteMany({ userId: user._id });
+    const tokenObj = await DesktopToken.generate(user._id);
+
+    // 🔥 redirect to Go EXE
+    return res.redirect(`${callback}?token=${tokenObj.token}`);
+  } catch (err) {
+    console.error("DESKTOP LOGIN ERROR:", err);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 

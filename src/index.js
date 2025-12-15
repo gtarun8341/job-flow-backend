@@ -10,7 +10,7 @@ const start = async () => {
   try {
     await connectDB();
 
-    app.listen(PORT, "0.0.0.0", () => {
+    app.listen(PORT, () => {
       console.log(`🚀 Server running at http://0.0.0.0:${PORT}`);
     });
   } catch (err) {

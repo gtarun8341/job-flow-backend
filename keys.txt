@@ -1,1 +1,3 @@
 khexwozkfjkwadvl
+
+redis-cli --tls -u redis://default:AU3yAAIncDE3NDkyZjc5OWQzMmE0NjYxODVlNTNjZjBkNjRlOTA2YXAxMTk5NTQ@welcomed-tarpon-19954.upstash.io:6379

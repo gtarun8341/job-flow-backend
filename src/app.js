@@ -14,32 +14,37 @@ import jobEmailStatsRoutes from "./routes/jobEmailStatsRoutes.js";
 import DesktopTokenRoutes from "./routes/DesktopTokenRoutes.js";
 import userDefaultsRoutes from "./routes/userDefaultsRoutes.js";
 import mobileAuthRoutes from "./routes/mobileAuthRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
+import adminAppRoutes from "./routes/adminAppRoutes.js";
+import publicAppRoutes from "./routes/publicAppRoutes.js";
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+app.use(express.static(path.join(__dirname, "..", "public")));
 
-// app.use(
-//   cors({
-//     origin: [
-//       "http://localhost:5173",
-//       "http://127.0.0.1:5173",
-//       "http://localhost:8080",
-//       "http://127.0.0.1:8080",
-//     ],
-//     credentials: true,
-//     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-//     allowedHeaders: ["Content-Type", "Authorization"],
-//   })
-// );
 app.use(
   cors({
-    origin: "*", // TEMP for development
+    origin: [
+      "http://localhost:5173",
+      "http://127.0.0.1:5173",
+      "http://localhost:8080",
+      "http://127.0.0.1:8080",
+    ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+// app.use(
+//   cors({
+//     origin: "*", // TEMP for development
+//     credentials: true,
+//   })
+// );
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // 🔥 for HTML forms
 app.use(
   "/uploads",
   express.static(
@@ -62,6 +67,11 @@ app.use("/api/job-stats", jobEmailStatsRoutes);
 app.use("/api/desktop-token", DesktopTokenRoutes);
 app.use("/api/defaults", userDefaultsRoutes);
 app.use("/api/mobile", mobileAuthRoutes);
+
+app.use("/api/admin", adminRoutes);
+app.use("/api/admin/apps", adminAppRoutes);
+
+app.use("/api/apps", publicAppRoutes);
 
 app.use(errorHandler);
 

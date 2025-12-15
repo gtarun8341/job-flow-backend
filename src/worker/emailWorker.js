@@ -9,6 +9,7 @@ import { decrypt } from "../utils/aesEncryption.js";
 import { validateEmailDomain } from "../utils/dnsValidation.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import { redisConnection } from "../config/redis.js";
 
 dotenv.config(); // so .env loads
 
@@ -20,7 +21,7 @@ mongoose
   .then(() => console.log("📦 Worker connected to MongoDB"))
   .catch((err) => console.error("❌ Worker DB connection failed:", err));
 
-const connection = { host: "localhost", port: 6379 };
+// const connection = { host: "localhost", port: 6379 };
 
 export const emailWorker = new Worker(
   "emailQueue",
@@ -116,5 +117,5 @@ export const emailWorker = new Worker(
       console.error("WORKER FATAL ERROR:", err);
     }
   },
-  { connection }
+  { connection: redisConnection }
 );

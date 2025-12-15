@@ -1,3 +1,15 @@
 khexwozkfjkwadvl
 
 redis-cli --tls -u redis://default:AU3yAAIncDE3NDkyZjc5OWQzMmE0NjYxODVlNTNjZjBkNjRlOTA2YXAxMTk5NTQ@welcomed-tarpon-19954.upstash.io:6379
+
+
+PORT=5000
+MONGO_URI=mongodb+srv://jinxforever8341_db_user:e4hujLn5y9k4Fmay@cluster0.xutw2by.mongodb.net/email-sender
+JWT_SECRET=supersecretkey
+JWT_EXPIRES_IN=7d
+
+CLIENT_URL=http://localhost:8000
+UPLOAD_DIR=uploads
+EMAIL_SECRET_KEY=your32charactersecretkeyhere1234
+
+REDIS_URL=redis://default:AU3yAAIncDE3NDkyZjc5OWQzMmE0NjYxODVlNTNjZjBkNjRlOTA2YXAxMTk5NTQ@welcomed-tarpon-19954.upstash.io:6379

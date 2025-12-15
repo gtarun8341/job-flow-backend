@@ -38,6 +38,7 @@ bower_components
 build/Release
 
 uploads/
+keys.txt
 
 # Dependency directories
 node_modules/
